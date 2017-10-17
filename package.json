@@ -1,0 +1,16 @@
+{
+  "name": "huffmancode",
+  "version": "1.0.0",
+  "description": "Create a frequency table for input characters and creates their Huffman Codes",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node main.js"
+  },
+  "author": "Sayan Mukherjee",
+  "license": "MIT",
+  "dependencies": {
+    "file-system": "^2.2.2",
+    "read-file": "^0.2.0"
+  }
+}
