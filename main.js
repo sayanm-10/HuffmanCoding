@@ -5,7 +5,7 @@ let symbol_info = [];
 let tree = [];
 let forest = new MinPriorityQueue();
 
-let debug = true;
+let debug = false;
 
 // used to bootstrap the application
 let init = function () {
@@ -39,51 +39,49 @@ let createSymbolInfo = function (symbols) {
 };
 
 let initForest = function(alphabet){
-  for (item in alphabet){
-      let forest_root = {
-                root:alphabet[item].leaf,
-                weight:alphabet[item].frequency
-      };
-      forest.Insert(forest_root);
-      let tree_node = {
-              left_child:-1,
-              right_child:-1,
-              parent:-1
-      };
-      tree[alphabet[item].leaf]=tree_node;
-  }
+    for (item in alphabet){
+        let forestRoot = {
+                  root:alphabet[item].leaf,
+                  weight:alphabet[item].frequency
+        };
+        forest.Insert(forestRoot);
+        let treeNode = {
+                left_child:-1,
+                right_child:-1,
+                parent:-1
+        };
+        tree[alphabet[item].leaf]=treeNode;
+    }
 }
 
 let condenseForest = function(){
-  console.log('inforest')
-  while (forest.GetSize() > 1){
-    let min1 = forest.DeleteMin();
-    if (debug) {console.log(min1.weight,'popped');}
-    let min2 = forest.DeleteMin();
-    if (debug) {console.log(min2.weight,'popped');}
+    while (forest.GetSize() > 1){
+        let min1 = forest.DeleteMin();
+        if (debug) {console.log(min1.weight,'popped');}
+        let min2 = forest.DeleteMin();
+        if (debug) {console.log(min2.weight,'popped');}
 
-    tree_node = {left_child:min1.root,
-                right_child:min2.root,
-                parent:-1
-    };
-    tree[tree.length]=tree_node;
-    let forest_root = {
-              root:tree.length,
-              weight:min1.weight+min2.weight
-    };
-    forest.Insert(forest_root);
-    if (debug) {console.log(forest_root.weight,'node created');}
-    tree[min1.root].parent=tree.length-1;
-    tree[min2.root].parent=tree.length-1;
-    if (debug) {console.log('Priority Queue');}
-    if (debug) {console.log(forest.toString());}
-    let array = [];
-    for (var index = 0; index < tree.length; index++) {
-      array.push([index,tree[index].parent]);
-    }
-    if (debug) {console.log('Tree');}
-    if (debug) {console.log(array);}
-  }
+        treeNode = {left_child:min1.root,
+                    right_child:min2.root,
+                    parent:-1
+        };
+        tree[tree.length]=treeNode;
+        let forestRoot = {
+                  root:tree.length,
+                  weight:min1.weight+min2.weight
+        };
+        forest.Insert(forestRoot);
+        tree[min1.root].parent=tree.length-1;
+        tree[min2.root].parent=tree.length-1;
+        if (debug) {console.log('Priority Queue');}
+        if (debug) {console.log(forest.toString());}
+        let array = [];
+        for (var index = 0; index < tree.length; index++) {
+            array.push([index,tree[index].parent]);
+        }
+        if (debug) {console.log('Tree');}
+        if (debug) {console.log(array);}
+      }
 }
 
 init();
