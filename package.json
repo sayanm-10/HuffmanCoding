@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node main.js"
   },
-  "author": "Sayan Mukherjee",
+  "author": "Sayan Mukherjee, Lindsay Portelli",
   "license": "MIT",
   "dependencies": {
     "file-system": "^2.2.2",
