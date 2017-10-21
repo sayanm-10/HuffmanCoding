@@ -41,24 +41,27 @@ let createSymbolInfo = function (symbols) {
         }
     }
     // temp log for our benefit
-    for (item in symbol_info) {
-        console.log(symbol_info[item]);
+    if (false) {
+        for (item in symbol_info) {
+            console.log(symbol_info[item]);
+        }
     }
+
 };
 
 let initForest = function(alphabet){
     for (item in alphabet){
         let forestRoot = {
-                  root:alphabet[item].leaf,
-                  weight:alphabet[item].frequency
+                  root: alphabet[item].leaf,
+                  weight: alphabet[item].frequency
         };
         forest.Insert(forestRoot);
         let treeNode = {
-                left_child:-1,
-                right_child:-1,
-                parent:-1
+                left_child: -1,
+                right_child: -1,
+                parent: -1
         };
-        tree[alphabet[item].leaf]=treeNode;
+        tree[alphabet[item].leaf] = treeNode;
     }
 };
 
@@ -69,18 +72,19 @@ let condenseForest = function(){
         let min2 = forest.DeleteMin();
         if (debug) {console.log(min2.weight,'popped');}
 
-        treeNode = {left_child:min1.root,
-                    right_child:min2.root,
-                    parent:-1
+        treeNode = {
+            left_child: min1.root,
+            right_child: min2.root,
+            parent: -1
         };
-        tree[tree.length]=treeNode;
+        tree[tree.length] = treeNode;
         let forestRoot = {
-                  root:tree.length,
-                  weight:min1.weight+min2.weight
+                  root: tree.length,
+                  weight: min1.weight + min2.weight
         };
         forest.Insert(forestRoot);
-        tree[min1.root].parent=tree.length-1;
-        tree[min2.root].parent=tree.length-1;
+        tree[min1.root].parent= tree.length - 1;
+        tree[min2.root].parent= tree.length - 1;
         if (debug) {console.log('Priority Queue');}
         if (debug) {console.log(forest.toString());}
         let array = [];
@@ -95,7 +99,7 @@ let condenseForest = function(){
 let buildFrequencyTable = function (totalSymbolCount, symbols) {
     for (item in symbols) {
         let symbolFrequencyPercentage = symbols[item].frequency / totalSymbolCount * 100;
-        writeFrequencyTable(symbols[item].symbol, symbolFrequencyPercentage.toFixed(2));
+        writeFrequencyTable(symbols[item].symbol, symbolFrequencyPercentage.toFixed(3));
     }
 };
 

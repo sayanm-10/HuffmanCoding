@@ -1,5 +1,5 @@
 class MinPriorityQueue{
-    constructor(){
+    constructor() {
         this.items = [];
         this.n = 0;
     }
