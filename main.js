@@ -1,20 +1,28 @@
 let fs = require("file-system");
 let reader = require("read-file");
 require('./MinPriorityQueue.js');
-let symbol_info = [];
-let tree = [];
+let symbol_info = [], tree = [];
 let forest = new MinPriorityQueue();
+const INPUT_FILE = "infile.dat", OUTPUT_FILE = "outfile.dat";
 
 let debug = false;
 
 // used to bootstrap the application
 let init = function () {
-    let readBuffer = reader.sync("infile.dat", "utf-8");
+    let readBuffer = reader.sync(INPUT_FILE, "utf-8");
     let allSymbols = readBuffer.replace(/[^0-9a-zA-Z]/g, ''); // get rid of everything except letters and numbers
     createSymbolInfo(allSymbols);
+    initWriteFile();
+    buildFrequencyTable(allSymbols.length, symbol_info);
     initForest(symbol_info);
     condenseForest();
+
     //console.log(inputString);
+};
+
+let initWriteFile = function () {
+    let frequencyTableHeader = "Symbol" + "\t" + "Frequency";
+    fs.writeFile(OUTPUT_FILE, frequencyTableHeader);
 };
 
 let createSymbolInfo = function (symbols) {
@@ -52,7 +60,7 @@ let initForest = function(alphabet){
         };
         tree[alphabet[item].leaf]=treeNode;
     }
-}
+};
 
 let condenseForest = function(){
     while (forest.GetSize() > 1){
@@ -76,12 +84,24 @@ let condenseForest = function(){
         if (debug) {console.log('Priority Queue');}
         if (debug) {console.log(forest.toString());}
         let array = [];
-        for (var index = 0; index < tree.length; index++) {
+        for (let index = 0; index < tree.length; index++) {
             array.push([index,tree[index].parent]);
         }
         if (debug) {console.log('Tree');}
         if (debug) {console.log(array);}
       }
-}
+};
+
+let buildFrequencyTable = function (totalSymbolCount, symbols) {
+    for (item in symbols) {
+        let symbolFrequencyPercentage = symbols[item].frequency / totalSymbolCount * 100;
+        writeFrequencyTable(symbols[item].symbol, symbolFrequencyPercentage.toFixed(2));
+    }
+};
+
+let writeFrequencyTable = function (symbol, frequency) {
+    let tableEntry = "\n" + symbol + "," + "\t" + frequency + "%";
+    fs.appendFile(OUTPUT_FILE, tableEntry);
+};
 
 init();
