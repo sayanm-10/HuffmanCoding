@@ -1,7 +1,7 @@
 let fs = require("file-system");
 let reader = require("read-file");
 require('./MinPriorityQueue.js');
-let symbol_info = [], tree = [], huffman_code = [];
+let symbol_info = [], tree = [], huffman_code = [], symbols_sorted = [];
 let forest = new MinPriorityQueue();
 const INPUT_FILE = "infile.dat", OUTPUT_FILE = "outfile.dat";
 
@@ -38,6 +38,18 @@ let createSymbolInfo = function (symbols) {
             symbol_info[character].frequency += 1;
         }
     }
+    // create a list of symbols in order of most to least frequent
+    let sortable = [];
+    for (var item in symbol_info) {
+        sortable.push([item, symbol_info[item].frequency]);
+    }
+    symbols_sorted_with_freq = sortable.sort(function(a, b) {
+        return b[1] - a[1];
+    });
+    for (item in symbols_sorted_with_freq) {
+        symbols_sorted.push(symbols_sorted_with_freq[item][0]);
+    }
+
     if (debug) {
         // temp log for our benefit
         for (item in symbol_info) {
@@ -98,22 +110,9 @@ let condenseForest = function(){
 };
 
 let buildFrequencyTable = function (totalSymbolCount, symbols) {
-  var sortable = [];
-  for (var item in symbols) {
-      sortable.push([item, symbols[item].frequency]);
-  }
-  symbols_sorted = sortable.sort(function(a, b) {
-      return b[1] - a[1];
-  });
-  console.log(symbols);
-    symbols=symbols.sort(function(a, b) {
-        return parseInt(b.frequency) - parseInt(a.frequency);
-        });
-    console.log(symbols);
     for (item in symbols_sorted) {
-      console.log(symbols_sorted[item]);
-        let symbolFrequencyPercentage = symbols_sorted[item][1] / totalSymbolCount * 100;
-        writeFrequencyTable(symbols_sorted[item][0], symbolFrequencyPercentage.toFixed(3));
+        let symbolFrequencyPercentage = symbols[symbols_sorted[item]].frequency / totalSymbolCount * 100;
+        writeFrequencyTable(symbols[symbols_sorted[item]].symbol, symbolFrequencyPercentage.toFixed(3));
     }
 };
 
@@ -139,7 +138,7 @@ let traverseTree = function () {
     for (item in symbol_info) {
         let node = tree[symbol_info[item].leaf];
         console.log("Node: ", node);
-        huffman_code[i] = {
+        huffman_code[symbol_info[item].symbol] = {
             character: symbol_info[item].symbol,
             code: [],
         }
@@ -153,9 +152,9 @@ let traverseTree = function () {
             let parentIndex = node.parent;
             console.log("PI: ", parentIndex);
             if (tree[parentIndex].left_child === childIndex) {
-                huffman_code[i].code.unshift("0"); // generating code by traversing up from the leaf
+                huffman_code[symbol_info[item].symbol].code.unshift("0"); // generating code by traversing up from the leaf
             } else if (tree[parentIndex].right_child === childIndex) {
-                huffman_code[i].code.unshift("1");
+                huffman_code[symbol_info[item].symbol].code.unshift("1");
             }
             if (parentIndex === childIndex) {
                 break;
@@ -173,8 +172,8 @@ let writeHuffmanCode = function () {
     //console.log("Wwriting code....");
     let tableHeader = "\n\n\n" + "Symbol" + "\t" + "Huffman Codes";
     fs.appendFile(OUTPUT_FILE, tableHeader);
-    for (entry in huffman_code) {
-        let code = "\n" + huffman_code[entry].character + "\t" + huffman_code[entry].code;
+    for (entry in symbols_sorted) {
+        let code = "\n" + huffman_code[symbols_sorted[entry]].character + "\t" + huffman_code[symbols_sorted[entry]].code;
         fs.appendFile(OUTPUT_FILE, code);
     }
     getNumBits();
