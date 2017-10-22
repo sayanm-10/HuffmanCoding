@@ -61,7 +61,7 @@ let initForest = function(alphabet) {
         };
         tree[alphabet[item].leaf] = treeNode;
     }
-    console.log(forest);
+    //console.log(forest);
     condenseForest();
 };
 
@@ -84,8 +84,8 @@ let condenseForest = function() {
                   weight: min1.weight + min2.weight
         };
         forest.Insert(forestRoot);
-        tree[min1.root].parent= tree.length - 1;
-        tree[min2.root].parent= tree.length - 1;
+        tree[min1.root].parent= tree.length;
+        tree[min2.root].parent= tree.length;
         if (debug) {console.log('Priority Queue');}
         if (debug) {console.log(forest.toString());}
       }
@@ -112,30 +112,37 @@ let writeFrequencyTable = function (symbol, frequency) {
 };
 
 let traverseTree = function () {
+    let i = 0;
     for (item in symbol_info) {
-        let i = 0;
         let node = tree[symbol_info[item].leaf];
-        //console.log(node);
+        console.log("Node: ", node);
         huffman_code[i] = {
             character: symbol_info[item].symbol,
             code: [],
         }
-        while (node.parent !== -1) { // reached root of tree
+        while (node && node.parent !== -1) { // reached root of tree
             let childIndex = tree.findIndex(function(obj) {
                 return obj.left_child === node.left_child
                 && obj.right_child === node.right_child
                 && obj.parent === node.parent;
             });
-            let parentIndex = node.parent;
+            console.log("CI :", childIndex);
+            let parentIndex = node.parent - 1;
+            console.log("PI: ", parentIndex);
             if (tree[parentIndex].left_child === childIndex) {
-                huffman_code[i].code.unshift("0");
+                huffman_code[i].code.unshift("0"); // generating code by traversing up from the leaf
             } else if (tree[parentIndex].right_child === childIndex) {
                 huffman_code[i].code.unshift("1");
             }
-            node = tree[parentIndex]; 
+            if (parentIndex === childIndex) {
+                break;
+            }
+            node = tree[parentIndex];
+            console.log("Next Node: ", node);
         }
         i++;
     }
+    console.log(huffman_code);  
     writeHuffmanCode();
 };
 

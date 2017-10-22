@@ -1,0 +1,16 @@
+Symbol	Frequency
+a,	33.333%
+b,	27.273%
+c,	12.121%
+d,	15.152%
+e,	9.091%
+f,	3.030%
+
+
+Symbol	Huffman Codes
+a	1,0,1
+b	1,0,1
+c	1,0
+e	1
+d	1,0
+f	1
