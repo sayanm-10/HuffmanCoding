@@ -12,7 +12,7 @@ class MinPriorityQueue{
         return this.n;
     }
 
-    Insert(newItem){
+    Insert(newItem) {
         this.items[++this.n] = newItem;
         let i = this.n;
        // while we haven't reached the beginning of the items and
@@ -23,12 +23,14 @@ class MinPriorityQueue{
         }
     }
 
-    DeleteMin(){
+    DeleteMin() {
         if(this.IsEmpty()) {
             throw new Error('No items in the queue.');
         }
         this.swap(1, this.n);
-        let min = this.items[this.n--];
+        //let min = this.items[this.n--];
+        let min = this.items.pop();
+        this.n = this.n - 1;
         let i = 1;
         while(2*i <= this.n) {
              let child = 2*i;

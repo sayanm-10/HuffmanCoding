@@ -20,11 +20,11 @@ for (key in alphabet){
               weight:alphabet[key].frequency
     };
     forest.Insert(forest_root);
-    console.log(forest.toString());
+    console.log("MinQ: ", forest.toString());
 
 }
 
 while (!forest.IsEmpty()){
   let min = forest.DeleteMin();
-  console.log(forest.toString());
+  console.log("DeleteMin: ", min.weight + " ", forest.toString());
 }
