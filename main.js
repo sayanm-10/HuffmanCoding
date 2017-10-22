@@ -12,8 +12,15 @@ let init = function () {
     let readBuffer = reader.sync(INPUT_FILE, "utf-8");
     let allSymbols = readBuffer.replace(/[^0-9a-zA-Z]/g, ''); // get rid of everything except letters and numbers
     createSymbolInfo(allSymbols);
+    initWriteFile();
+    buildFrequencyTable(allSymbols.length, symbol_info);
     initForest(symbol_info);
     //console.log(inputString);
+};
+
+let initWriteFile = function () {
+    let frequencyTableHeader = "Symbol" + "\t" + "Frequency";
+    fs.writeFile(OUTPUT_FILE, frequencyTableHeader);
 };
 
 let createSymbolInfo = function (symbols) {
