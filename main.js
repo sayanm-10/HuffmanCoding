@@ -63,25 +63,26 @@ let condenseForest = function(){
         if (debug) {console.log(min1.weight,'popped');}
         let min2 = forest.DeleteMin();
         if (debug) {console.log(min2.weight,'popped');}
+        // create a tree node with the roots (ids) of the two min items
 
         treeNode = {left_child:min1.root,
                     right_child:min2.root,
                     parent:-1
         };
-        tree[tree.length]=treeNode;
+        // create a new forest node with the sum of the weights of the two min items
+
         let forestRoot = {
                   root:tree.length,
                   weight:min1.weight+min2.weight
         };
         forest.Insert(forestRoot);
-        tree[min1.root].parent= tree.length - 1;
-        tree[min2.root].parent= tree.length - 1;
+        tree[min1.root].parent= tree.length;
+        tree[min2.root].parent= tree.length;
+
+        tree.push(treeNode);
+
         if (debug) {console.log('Priority Queue');}
         if (debug) {console.log(forest.toString());}
-      }
-      let array = [];
-      for (let index = 0; index < tree.length; index++) {
-          array.push([index,tree[index].parent]);
       }
       if (true) {console.log('Tree');}
       if (true) {console.log(tree);}
@@ -132,7 +133,7 @@ let traverseTree = function () {
         }
         i++;
     }
-    console.log(huffman_code);  
+    console.log(huffman_code);
     writeHuffmanCode();
 };
 

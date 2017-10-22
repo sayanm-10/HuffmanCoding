@@ -28,7 +28,6 @@ class MinPriorityQueue{
             throw new Error('No items in the queue.');
         }
         this.swap(1, this.n);
-        //let min = this.items[this.n--];
         let min = this.items.pop();
         this.n = this.n - 1;
         let i = 1;
