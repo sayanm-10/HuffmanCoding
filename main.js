@@ -98,9 +98,22 @@ let condenseForest = function(){
 };
 
 let buildFrequencyTable = function (totalSymbolCount, symbols) {
-    for (item in symbols) {
-        let symbolFrequencyPercentage = symbols[item].frequency / totalSymbolCount * 100;
-        writeFrequencyTable(symbols[item].symbol, symbolFrequencyPercentage.toFixed(3));
+  var sortable = [];
+  for (var item in symbols) {
+      sortable.push([item, symbols[item].frequency]);
+  }
+  symbols_sorted = sortable.sort(function(a, b) {
+      return b[1] - a[1];
+  });
+  console.log(symbols);
+    symbols=symbols.sort(function(a, b) {
+        return parseInt(b.frequency) - parseInt(a.frequency);
+        });
+    console.log(symbols);
+    for (item in symbols_sorted) {
+      console.log(symbols_sorted[item]);
+        let symbolFrequencyPercentage = symbols_sorted[item][1] / totalSymbolCount * 100;
+        writeFrequencyTable(symbols_sorted[item][0], symbolFrequencyPercentage.toFixed(3));
     }
 };
 
