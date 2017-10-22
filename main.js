@@ -139,6 +139,7 @@ let traverseTree = function () {
         let node = tree[symbol_info[item].leaf];
         console.log("Node: ", node);
         huffman_code[symbol_info[item].symbol] = {
+        huffman_code[i] = {
             character: symbol_info[item].symbol,
             code: [],
         }
@@ -153,8 +154,10 @@ let traverseTree = function () {
             console.log("PI: ", parentIndex);
             if (tree[parentIndex].left_child === childIndex) {
                 huffman_code[symbol_info[item].symbol].code.unshift("0"); // generating code by traversing up from the leaf
+                huffman_code[i].code.unshift("0"); // generating code by traversing up from the leaf
             } else if (tree[parentIndex].right_child === childIndex) {
                 huffman_code[symbol_info[item].symbol].code.unshift("1");
+                huffman_code[i].code.unshift("1");
             }
             if (parentIndex === childIndex) {
                 break;
@@ -172,7 +175,15 @@ let writeHuffmanCode = function () {
     //console.log("Wwriting code....");
     let tableHeader = "\n\n\n" + "Symbol" + "\t" + "Huffman Codes";
     fs.appendFile(OUTPUT_FILE, tableHeader);
+    let sortable = [];
+    for (var item in huffman_code) {
+        sortable.push([item, huffman_code[item].frequency]);
+    }
+    symbols_sorted_with_freq = sortable.sort(function(a, b) {
+        return b[1] - a[1];
+    });
     for (entry in symbols_sorted) {
+      console.log(symbols_sorted[entry]);
         let code = "\n" + huffman_code[symbols_sorted[entry]].character + "\t" + huffman_code[symbols_sorted[entry]].code;
         fs.appendFile(OUTPUT_FILE, code);
     }
