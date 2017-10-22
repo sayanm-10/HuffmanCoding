@@ -109,6 +109,18 @@ let writeFrequencyTable = function (symbol, frequency) {
     fs.appendFile(OUTPUT_FILE, tableEntry);
 };
 
+let getNumBits = function(){
+  let numBits = 0;
+  for (entry in huffman_code) {
+      let symbol = huffman_code[entry].character;
+      let code =  huffman_code[entry].code;
+      let frequency = symbol_info[symbol].frequency;
+      numBits = numBits + code.length*frequency;
+  }
+  let bitsString = '\n\nTotal Bits: '+numBits;
+  fs.appendFile(OUTPUT_FILE, bitsString);
+
+}
 let traverseTree = function () {
     let i = 0;
     for (item in symbol_info) {
@@ -152,6 +164,7 @@ let writeHuffmanCode = function () {
         let code = "\n" + huffman_code[entry].character + "\t" + huffman_code[entry].code;
         fs.appendFile(OUTPUT_FILE, code);
     }
+    getNumBits();
 };
 
 init();
