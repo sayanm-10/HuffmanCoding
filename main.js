@@ -47,8 +47,7 @@ let createSymbolInfo = function (symbols) {
     for (item in symbols_sorted_with_freq) {
         symbols_sorted.push(symbols_sorted_with_freq[item][0]);
     }
-    if (true) {
-        // temp log for our benefit
+
     if (debug) {
         for (item in symbol_info) {
             console.log(symbol_info[item]);
@@ -132,7 +131,7 @@ let traverseTree = function () {
     for (item in symbol_info) {
         let node = tree[symbol_info[item].leaf];
         let childIndex, parentIndex;
-        console.log("Node: ", node);
+        if (debug) { console.log("Node: ", node) };
         huffman_code[symbol_info[item].symbol] = {
             character: symbol_info[item].symbol,
             code: [],
